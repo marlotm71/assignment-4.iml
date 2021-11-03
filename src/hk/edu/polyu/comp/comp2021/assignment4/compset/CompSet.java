@@ -20,33 +20,61 @@ class CompSet<T> {
      * Throw IllegalArgumentException if 'elements' is null.
      */
     public CompSet(List<T> elements) {
-        // Add missing code here
+        if (elements == null) {
+            throw new IllegalArgumentException();
+        } 
         storage = new List[NUBMER_OF_BUCKETS];
-        storage[0] = elements;
+        for (T element : elements) {
+            if (!this.contains(element)) {
+                int pos = getIndex(element);
+                if (this.storage[pos] == null) {
+                    storage[pos] = new ArrayList<T>();
+                }
+                storage[pos].add(element);
+            }
+        }
+        
     }
+
 
     /**
      * Get the total number of elements stored in 'this'.
      */
     public int getCount() {
-        // Add missing code here
-        List<T> list = this.getElements();
-        return list.size();
+        int count=0;
+        for (int i=0;i<NUBMER_OF_BUCKETS;i++){
+            if (this.storage[i]!=null){
+                count += this.storage[i].size();
+            }
+        }
+        return count;
     }
 
     public boolean isEmpty() {
-        List <T> list = this.getElements();
-        return list.isEmpty();
+        int countEl =this.getCount();
+        boolean isEmpty;
+        if (countEl ==0){
+            isEmpty= true;
+        }
+        else {
+           isEmpty= false;
+        }
+        return isEmpty;
     }
 
     /**
      * Whether 'element' is contained in 'this'?
      */
     public boolean contains(T element) {
-        List <T> list = this.getElements();
-        for (int i = 0; i< list.size();i++){
-            if (list.get(i) == element ){
-                return true;// Add missing code here
+        if (element==null){
+            return false;
+        }
+        int pos=this.getIndex(element);
+        if (this.storage[pos]!=null){
+            for (T elmt:storage[pos]){
+                if (elmt==element){
+                    return true;
+                }
             }
         }
         return false;
@@ -56,11 +84,15 @@ class CompSet<T> {
      * Get all elements of 'this' as a list.
      */
     public List<T> getElements() {
-        List<T>[] a = new List[0];
-        for (int i = 0; i<this.storage.length;i++){
-            ;// Add missing code here
+        List<T> listElmt = new ArrayList<T>();
+        for (int i=0;i<NUBMER_OF_BUCKETS;i++){
+            if (this.storage[i]!=null){
+                for (T elmt:storage[i]){
+                    listElmt.add(elmt);
+                }
+            }
         }
-        return null;
+        return listElmt;
     }
 
     /**
@@ -68,7 +100,16 @@ class CompSet<T> {
      * Throw IllegalArgumentException if 'element' is null.
      */
     public void add(T element) {
-        // Add missing code here
+        if (element==null){
+            throw new IllegalArgumentException();
+        }
+        if (!this.contains(element)) {
+            int pos = getIndex(element);
+            if (this.storage[pos] == null) {
+                storage[pos] = new ArrayList<T>();
+            }
+            storage[pos].add(element);
+        }
 
     }
 
@@ -77,8 +118,27 @@ class CompSet<T> {
      * The order of the elements inside each CompSet is irrelevant.
      */
     public boolean equals(Object other){
-        // Add missing code here
-        return false;
+        boolean isEqual=false;
+        if (!(other ==null)){
+            if(other.getClass()==getClass()){
+                if (((CompSet<?>) other).isEmpty()&& this.isEmpty()){
+                    isEqual= true;
+                }
+                List<T> listEl1=this.getElements();
+                CompSet<T> other_Comp=(CompSet<T>) other;
+                if( this.getCount()==other_Comp.getCount()){
+                    for (T elmt: listEl1){
+                        if(other_Comp.contains(elmt)){
+                            isEqual=true;
+                        }
+                        else{
+                            isEqual=false;
+                        }
+                    }
+                }
+            }
+        }
+        return isEqual;
     }
 
     /**
@@ -86,8 +146,13 @@ class CompSet<T> {
      * Throw IllegalArgumentException if 'element' is null.
      */
     public void remove (T element) {
-        // Add missing code here
-
+        if (element==null){
+            throw new IllegalArgumentException();
+        }
+        if (this.contains(element)) {
+            int pos = getIndex(element);
+            storage[pos].remove(element);
+        }
     }
 
     //========================================================================== private methods

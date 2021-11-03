@@ -9,7 +9,6 @@ public class BankAccount {
     public BankAccount(int initialBalance){
         if(initialBalance < 0)
             throw new IllegalArgumentException();
-
         balance = initialBalance;
     }
 
@@ -19,19 +18,29 @@ public class BankAccount {
     }
 
 	/** Deposit 'amount' into this account. 'amount' should always be positive. */
-    public void deposit(int amount){
+    synchronized void deposit(int amount){
         if(amount <= 0)
             throw new IllegalArgumentException();
+        balance+=amount;
+        notify();
 
-        // Add missing code here
     }
 
 	/** Withdraw 'amount' from this account. 'amount' should always be positive. */
-    public void withdraw(int amount){
+    synchronized void withdraw(int amount){
         if(amount <= 0)
             throw new IllegalArgumentException();
 
-        // Add missing code here
+        while (balance<amount){
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        balance-=amount;
+    }
+
 
     }
-}
+
