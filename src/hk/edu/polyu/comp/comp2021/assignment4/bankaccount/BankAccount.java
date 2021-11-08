@@ -28,13 +28,16 @@ public class BankAccount {
 
 	/** Withdraw 'amount' from this account. 'amount' should always be positive. */
     synchronized void withdraw(int amount){
-        if(amount <= 0)
+        if(amount <= 0){
             throw new IllegalArgumentException();
+        }
+
 
         while (balance<amount){
             try {
                 wait();
-            } catch (InterruptedException e) {
+            }
+            catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }

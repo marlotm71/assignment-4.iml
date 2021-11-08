@@ -52,8 +52,8 @@ public class Environment {
             throw new IllegalArgumentException();
         }
         else{
-            int value = this.storage.get(variable.getName());
-            return value;
+            return (this.storage.get(variable.getName()));
+
         }
     }
 }

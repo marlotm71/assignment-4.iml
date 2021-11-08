@@ -66,18 +66,19 @@ class CompSet<T> {
      * Whether 'element' is contained in 'this'?
      */
     public boolean contains(T element) {
+        Boolean bool = false;
         if (element==null){
-            return false;
+            return bool;
         }
         int pos=this.getIndex(element);
         if (this.storage[pos]!=null){
             for (T elmt:storage[pos]){
                 if (elmt==element){
-                    return true;
+                    return (!bool);
                 }
             }
         }
-        return false;
+        return bool;
     }
 
     /**
@@ -87,8 +88,8 @@ class CompSet<T> {
         List<T> listElmt = new ArrayList<T>();
         for (int i=0;i<NUBMER_OF_BUCKETS;i++){
             if (this.storage[i]!=null){
-                for (T elmt:storage[i]){
-                    listElmt.add(elmt);
+                for (T element :storage[i]){
+                    listElmt.add(element);
                 }
             }
         }
@@ -124,11 +125,11 @@ class CompSet<T> {
                 if (((CompSet<?>) other).isEmpty()&& this.isEmpty()){
                     isEqual= true;
                 }
-                List<T> listEl1=this.getElements();
+                List<T> listEl =this.getElements();
                 CompSet<T> other_Comp=(CompSet<T>) other;
                 if( this.getCount()==other_Comp.getCount()){
-                    for (T elmt: listEl1){
-                        if(other_Comp.contains(elmt)){
+                    for (T element : listEl){
+                        if(other_Comp.contains(element)){
                             isEqual=true;
                         }
                         else{

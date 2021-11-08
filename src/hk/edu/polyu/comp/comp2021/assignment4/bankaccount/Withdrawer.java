@@ -10,9 +10,9 @@ public class Withdrawer implements Runnable{
     }
 
     public void run() {
+        // Note that a withdraw is only allowed when the
+        // balance is greater than the amount to withdraw
         for (int i = 0; i < 10; i++){
-			// Note that a withdraw is only allowed when the 
-			// balance is greater than the amount to withdraw
             ba.withdraw(amount);       
         }
     }
